@@ -1,0 +1,2 @@
+#ifndef CELESTRIALBODY_H
+#define CELESTRIALBODY_H
