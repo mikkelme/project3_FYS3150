@@ -4,6 +4,7 @@
 
 //Constructor
 Force::Force(string force_type){
+  //Link myFunc to the chosen force function
   if (force_type == "Gravity"){
     myFunc = Gravity;
   }

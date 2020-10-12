@@ -25,3 +25,6 @@ solver.o:						solver.cpp solver.h
 
 force.o:						force.cpp force.h
 										${CPPflags} -c force.cpp
+
+clean:
+	rm -f *.o *~

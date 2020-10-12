@@ -33,9 +33,10 @@ int main (int numArguments, char ** arguments){
   Force my_force("Gravity");
 
 
-  for (int timestep = 0; timestep < numTimesteps; timestep++){
-      my_solver.Euler_advance(my_system, my_force);
-      my_system.WriteToFile("system.data");
+
+   for (int timestep = 0; timestep < numTimesteps; timestep++){
+       my_solver.Euler_advance(my_system, my_force);
+       my_system.WriteToFile("system.data");
   }
 
 
