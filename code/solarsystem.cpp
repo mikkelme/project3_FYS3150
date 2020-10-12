@@ -1,45 +1,89 @@
 #include "solarsystem.h"
-
-
 #include <iostream>
-#include <vector>
+#include <deque>
 using namespace std;
 
 
 //CelestrialBody& SolarSystem::CreateBody(vec3 position, vec3 velocity, double mass){
 
 
-CelestialBody& SolarSystem::CreateBody(vec3 pos, vec3 vel, double mass){
-  //Create instance of CelestrialBody and add to my_bodies
-
-  my_bodies.push_back(CelestialBody(pos, vel, mass));
-
-  string name = "Planet_Name";
-
-  //body_names.push_back(name);
-  //cout << body_names.size() << endl;
-  //cout << body_names[-1] << endl;
+CelestialBody& SolarSystem::CreateBody(string body_name, vec3 pos, vec3 vel, double mass){
+  //Create instance of CelestrialBody
+  //adds object to my_bodies and body_name to body_names
+  cout << "Creating body: " << body_name << endl;
+  my_bodies.push_back(CelestialBody(body_name, pos, vel, mass));
+  body_names.push_back(body_name);
 
 
-  //vector<CelestialBody> &bodies = SolarSystem::bodies();
-  //return bodies[my_bodies.size() - 1];
-  //return my_bodies[my_bodies.size() - 1];
   return my_bodies.back();
 }
 
-vector<CelestialBody>& SolarSystem::bodies(){
+deque<CelestialBody>& SolarSystem::bodies(){
   return my_bodies;
 }
 
 void SolarSystem::PrintBodies(){
-
     for (int i = 0; i < my_bodies.size(); i++){
-    cout <<": Position: " << my_bodies[i].position << " Velocity: " << my_bodies[i].velocity << " Mass: " << my_bodies[i].mass <<endl;
+    cout << body_names[i] <<"; Position: " << my_bodies[i].position;
+    cout << " Velocity: " << my_bodies[i].velocity;
+    cout << " Mass: " << my_bodies[i].mass << endl;
+  }
+}
+
+
+void SolarSystem::CalculateForce(Force &force){
+
+  for (CelestialBody &body : my_bodies){
+    //Set forces to zero for alle bodies
+    body.force = vec3{0,0,0};
+  }
+  double pi = acos(-1.0);
+  double G = 4*pi*pi;
+  int N = my_bodies.size();
+  for (int i = 0; i < N; i++){
+    CelestialBody &body1 = my_bodies[i];
+    for (int j = i+1; j < N; j++){
+        CelestialBody &body2 = my_bodies[j];
+        force.call_force(body1, body2);
+        force.call_force(body2, body1);
+
+        // vec3 dr_vector = body1.position - body2.position;
+        // double dr = dr_vector.length();
+        // body1.force += Force::Gravity(body1.mass, body2.mass, dr_vector, dr, G);
+        // body2.force -= Force::Gravity(body1.mass, body2.mass, dr_vector, dr, G);
+
+    }
+  //body1.force.print();
+  }
+}
+
+void SolarSystem::WriteToFile(string filename){
+  if (!m_file.good()){
+    m_file.open(filename.c_str(), ofstream::out);
+    if (!m_file.good()){
+      cout << "Error opening file" << filename << ". Aborting!" << endl;
+      terminate();
+    }
   }
 
-  //vector<CelestialBody> &bodies = SolarSystem::bodies();
-  //for (int i = 0; i < bodies.size(); i++){
-  //  CelestialBody &body = bodies[i];
-  //  cout << "Position: " << body.position << " Velocity: " << body.velocity << " Mass: " << body.mass <<endl;
-  //}
+  m_file << my_bodies.size() << endl;
+  m_file << "id type x y z vx vy vz" << endl;
+  for (int i=0; i < my_bodies.size(); i++){
+    CelestialBody &body = my_bodies[i];
+    m_file << i << " ";
+    m_file << body.name << " ";
+    m_file << body.position.x() << " ";
+    m_file << body.position.y() << " ";
+    m_file << body.position.z() << " ";
+    m_file << body.velocity.x() << " ";
+    m_file << body.velocity.y() << " ";
+    m_file << body.velocity.z() << endl;
+  }
 }
+
+
+
+
+
+
+//

@@ -3,37 +3,43 @@
 #include <cstdlib>
 #include "solarsystem.h"
 #include "celestialbody.h"
+#include "solver.h"
+#include "force.h"
 #include "vec3.h"
+
+
+//#include <vector>
 using namespace std;
 
 int main (int numArguments, char ** arguments){
   int numTimesteps = 1000;
   if (numArguments >= 2) numTimesteps = atoi(arguments[1]);
-  //cout << numTimesteps << endl;
 
-  SolarSystem my_system; //Name of class
-  //my_system.test();
 
-  CelestialBody &Earth = my_system.CreateBody(vec3(1, 2, 3), vec3(4, 5, 6), 7);
-  CelestialBody &Sun = my_system.CreateBody(vec3(11, 12, 13), vec3(14, 15, 16), 17 );
-  CelestialBody &Planet = my_system.CreateBody(vec3(21, 22, 23), vec3(24, 25, 26), 27 );
-  //references stop working after adding more...
-  //but the reference from bodies work just fine:
+  SolarSystem my_system; //Initialize instance of SolarSystem
 
-  Earth.Print();
-  Sun.Print();
-  Planet.Print();
-  cout << endl;
+  double pi = acos(-1.0);
+  double M_Sun = 1.989e30;
+  double M_Earth = 5.972e24;
 
-  /*
-  vector<CelestialBody> &bodies = my_system.bodies();
-  cout << bodies.size() << endl;
-  for (int i = 0; i < bodies.size(); i++){
-    CelestialBody &body = bodies[i];
-    cout << "Position: " << body.position << " Velocity: " << body.velocity << " Mass: " << body.mass <<endl;
+  //Create Celestial Bodies
+  CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
+  CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(1, 0, 0), vec3(0, 2*pi, 0), M_Earth/M_Sun);
+  //my_system.PrintBodies();
+
+
+  double dt = 0.001;
+  Solver my_solver(dt);
+  Force my_force("Gravity");
+
+
+  for (int timestep = 0; timestep < numTimesteps; timestep++){
+      my_solver.Euler_advance(my_system, my_force);
+      my_system.WriteToFile("system.data");
   }
-  */
-  my_system.PrintBodies();
+
+
+
 
 
 

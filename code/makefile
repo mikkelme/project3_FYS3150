@@ -1,9 +1,9 @@
-CPPflags = c++ -std=c++11 #c++ -O3 
+CPPflags = c++ -std=c++11 #c++ -O3
 LIB =  #-larmadillo -llapack -lblas
 PROG = main
 
-${PROG}: 						${PROG}.o vec3.o solarsystem.o celestialbody.o
-										${CPPflags} ${PROG}.o vec3.o solarsystem.o celestialbody.o ${LIB} -o ${PROG}.exe
+${PROG}: 						${PROG}.o vec3.o solarsystem.o celestialbody.o solver.o force.o
+										${CPPflags} ${PROG}.o vec3.o solarsystem.o celestialbody.o solver.o force.o ${LIB} -o ${PROG}.exe
 
 ${PROG}.o: 					${PROG}.cpp
 										${CPPflags} -c ${PROG}.cpp
@@ -19,3 +19,9 @@ solarsystem.o: 			solarsystem.cpp solarsystem.h
 
 celestialbody.o: 		celestialbody.cpp celestialbody.h
 										${CPPflags} -c celestialbody.cpp
+
+solver.o:						solver.cpp solver.h
+										${CPPflags} -c solver.cpp
+
+force.o:						force.cpp force.h
+										${CPPflags} -c force.cpp

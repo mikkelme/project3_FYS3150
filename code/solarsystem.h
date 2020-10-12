@@ -2,8 +2,10 @@
 #define SOLARSYSTEM_H
 
 #include "celestialbody.h"
+#include "force.h"
 #include "vec3.h"
-#include <vector>
+#include <deque>
+#include <fstream>
 
 using namespace std;
 
@@ -12,15 +14,18 @@ class SolarSystem
 public:
   //CelestrialBody &CreateBody(vec3 position, vec3 velocity, double mass);
 
-  CelestialBody& CreateBody(vec3 pos, vec3 vel, double mass);
-  vector<CelestialBody>& bodies();
+  CelestialBody& CreateBody(string body_name, vec3 pos, vec3 vel, double mass);
+  deque<CelestialBody>& bodies();
   void PrintBodies();
+  void CalculateForce(Force &force);
+  void WriteToFile(string filename);
 
 
 
 private:
-  vector<CelestialBody> my_bodies;
-  vector<string> body_names;
+  deque <CelestialBody> my_bodies;
+  deque <string> body_names;
+  ofstream m_file;
 
 
 
@@ -32,4 +37,4 @@ private:
 
 };
 
-#endif
+#endif //SOLARSYSTEM_H
