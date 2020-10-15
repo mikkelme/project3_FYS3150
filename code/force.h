@@ -15,8 +15,8 @@ public:
   void call_force(CelestialBody &body1, CelestialBody &body2);
 
 
-private:
-  union myFunc; //link to force function
+//private:
+  //function<void(CelestialBody &body1, CelestialBody &body2)> myFunc; //link to force function
 
 };
 
