@@ -1,4 +1,5 @@
 #include "force.h"
+#include <cmath>
 #include <iostream>
 
 
@@ -6,7 +7,7 @@
 Force::Force(string force_type){
   //Link myFunc to the chosen force function
   if (force_type == "Gravity"){
-    myFunc = Gravity;
+    //myFunc = Gravity;
   }
   else {
     cout << "force_type: \"" << force_type << "\" not found.\n";
@@ -18,7 +19,7 @@ Force::Force(string force_type){
 }
 
 void Force::call_force(CelestialBody &body1, CelestialBody &body2){ //CelestialBody &body1, CelestialBody &body2
-  myFunc(body1, body2);
+  Gravity(body1, body2);
 }
 
 

@@ -16,7 +16,7 @@ public:
 
 
 private:
-  function<void(CelestialBody &body1, CelestialBody &body2)> myFunc; //link to force function
+  union myFunc; //link to force function
 
 };
 

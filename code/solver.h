@@ -11,9 +11,7 @@ public:
 
   Solver(double dt);
   void Euler_advance(SolarSystem &system, Force &force);
-
-
-private:
+  void Velocity_Verlet(SolarSystem &system, Force &force);
 
 };
 

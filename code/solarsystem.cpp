@@ -1,6 +1,7 @@
 #include "solarsystem.h"
 #include <iostream>
 #include <deque>
+#include <cmath>
 using namespace std;
 
 

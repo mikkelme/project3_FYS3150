@@ -28,14 +28,16 @@ int main (int numArguments, char ** arguments){
   //my_system.PrintBodies();
 
 
-  double dt = 0.001;
+  // Must be smaller if Forward Euler is used
+  double dt = 0.01;
   Solver my_solver(dt);
   Force my_force("Gravity");
 
 
 
    for (int timestep = 0; timestep < numTimesteps; timestep++){
-       my_solver.Euler_advance(my_system, my_force);
+       //my_solver.Euler_advance(my_system, my_force);
+       my_solver.Velocity_Verlet(my_system,my_force);
        my_system.WriteToFile("system.data");
   }
 
