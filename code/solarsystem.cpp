@@ -47,15 +47,12 @@ void SolarSystem::CalculateForce(Force &force){
         CelestialBody &body2 = my_bodies[j];
         force.call_force(body1, body2);
         force.call_force(body2, body1);
-
-        // vec3 dr_vector = body1.position - body2.position;
-        // double dr = dr_vector.length();
-        // body1.force += Force::Gravity(body1.mass, body2.mass, dr_vector, dr, G);
-        // body2.force -= Force::Gravity(body1.mass, body2.mass, dr_vector, dr, G);
-
     }
-  //body1.force.print();
   }
+}
+
+void SolarSystem::CalculateEnergy(){
+  //Calculate: kinetic, potential energy and total mechanical energy
 }
 
 void SolarSystem::WriteToFile(string filename){
