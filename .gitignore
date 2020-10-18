@@ -13,6 +13,7 @@
 
 #Text files including run data
 *.txt
+*.data
 
 #Mac files
 *.DS_Store
