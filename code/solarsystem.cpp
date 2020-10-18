@@ -5,7 +5,7 @@
 using namespace std;
 
 
-//CelestrialBody& SolarSystem::CreateBody(vec3 position, vec3 velocity, double mass){
+
 
 
 CelestialBody& SolarSystem::CreateBody(string body_name, vec3 pos, vec3 vel, double mass){
@@ -32,7 +32,7 @@ void SolarSystem::PrintBodies(){
 }
 
 
-void SolarSystem::CalculateForce(Force &force){
+void SolarSystem::CalculateForceEnergy(Force &force){
 
   for (CelestialBody &body : my_bodies){
     //Set forces to zero for alle bodies
@@ -47,13 +47,16 @@ void SolarSystem::CalculateForce(Force &force){
         CelestialBody &body2 = my_bodies[j];
         force.call_force(body1, body2);
         force.call_force(body2, body1);
+        double speed = body1.velocity.length();
+        body1.kin = 1/2*body1.mass*speed*speed;
+        body1.mek = body1.kin + body1.pot;
+
     }
   }
 }
 
-void SolarSystem::CalculateEnergy(){
-  //Calculate: kinetic, potential energy and total mechanical energy
-}
+
+
 
 void SolarSystem::WriteToFile(string filename){
   if (!m_file.good()){
@@ -65,7 +68,7 @@ void SolarSystem::WriteToFile(string filename){
   }
 
   m_file << my_bodies.size() << endl;
-  m_file << "id type x y z vx vy vz" << endl;
+  m_file << "id type x y z vx vy vz E_kin E_pot E_mek" << endl;
   for (int i=0; i < my_bodies.size(); i++){
     CelestialBody &body = my_bodies[i];
     m_file << i << " ";
@@ -75,7 +78,10 @@ void SolarSystem::WriteToFile(string filename){
     m_file << body.position.z() << " ";
     m_file << body.velocity.x() << " ";
     m_file << body.velocity.y() << " ";
-    m_file << body.velocity.z() << endl;
+    m_file << body.velocity.z() << " ";
+    m_file << body.kin << " ";
+    m_file << body.pot << " ";
+    m_file << body.mek << endl;
   }
 }
 

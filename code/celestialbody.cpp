@@ -18,7 +18,3 @@ void CelestialBody::Print(){
   cout << " Velocity: " << velocity;
   cout << " Mass: " << mass << endl;
 }
-
-void CelestialBody::Change(){
-    mass = 0;
-}

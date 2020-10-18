@@ -12,7 +12,7 @@ sun_vel = np.zeros((n,3))
 earth_pos = np.zeros((n,3))
 earth_vel = np.zeros((n,3))
 
-for i in range(n):	
+for i in range(n):
 	sun_pos[i,0] = float(lines[4*i+2].split()[2])
 	sun_pos[i,1] = float(lines[4*i+2].split()[3])
 	sun_pos[i,2] = float(lines[4*i+2].split()[4])

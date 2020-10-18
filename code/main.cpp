@@ -38,8 +38,7 @@ int main (int numArguments, char ** arguments){
   // double B = 5.0;
   // my_force.set_beta(B);
 
-
-
+  my_system.WriteToFile("system.data");
    for (int timestep = 0; timestep < numTimesteps; timestep++){
        //my_solver.Euler_advance(my_system, my_force);
        my_solver.Velocity_Verlet(my_system, my_force);

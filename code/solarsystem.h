@@ -17,8 +17,7 @@ public:
   CelestialBody& CreateBody(string body_name, vec3 pos, vec3 vel, double mass);
   deque<CelestialBody>& bodies();
   void PrintBodies();
-  void CalculateForce(Force &force);
-  void CalculateEnergy();
+  void CalculateForceEnergy(Force &force);
   void WriteToFile(string filename);
 
 
