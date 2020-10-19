@@ -18,7 +18,7 @@ public:
   deque<CelestialBody>& bodies();
   void PrintBodies();
   void CalculateForceEnergy(Force &force);
-  void WriteToFile(string filename);
+  void WriteToFile(string filename, double time);
 
 
 

@@ -35,15 +35,17 @@ int main (int numArguments, char ** arguments){
   Force my_force("Gravity");
 
   // Force my_force("Inverse_Beta");
-  // double B = 5.0;
+  // double B = 3.0;
   // my_force.set_beta(B);
 
-  my_system.WriteToFile("system.data");
-   for (int timestep = 0; timestep < numTimesteps; timestep++){
-       //my_solver.Euler_advance(my_system, my_force);
-       my_solver.Velocity_Verlet(my_system, my_force);
-       my_system.WriteToFile("system.data");
-  }
+  double time = 0;
+  my_system.WriteToFile("system.data", time);
+  for (int timestep = 1; timestep < numTimesteps; timestep++){
+    time = dt*timestep;
+    //my_solver.Euler_advance(my_system, my_force);
+    my_solver.Velocity_Verlet(my_system, my_force);
+    my_system.WriteToFile("system.data", time);
+}
 
 
 
