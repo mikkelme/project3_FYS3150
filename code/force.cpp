@@ -23,7 +23,7 @@ void Force::Gravity(CelestialBody &body1, CelestialBody &body2){
   double G = 4*pi*pi;
   vec3 dr_vector = body1.position - body2.position;
   double dr = dr_vector.length();
-  body1.force += -1*G*body1.mass*body2.mass*dr_vector/(dr*dr);
+  body1.force += -1*G*body1.mass*body2.mass*dr_vector/(dr*dr*dr);
   body1.pot += -G*body1.mass*body2.mass/dr;
 }
 
@@ -52,5 +52,5 @@ void Force::Inverse_Beta(CelestialBody &body1, CelestialBody &body2){
   int G = 4*pi*pi;
   vec3 dr_vector = body1.position - body2.position;
   double dr = dr_vector.length();
-  body1.force += -1*G*body1.mass*body2.mass*dr_vector/pow(dr,Beta);
+  body1.force += -1*G*body1.mass*body2.mass*dr_vector/(dr*pow(dr,Beta));
 }

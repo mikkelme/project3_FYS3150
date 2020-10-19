@@ -3,6 +3,7 @@
 
 #include "vec3.h"
 #include "celestialbody.h"
+#include <functional>
 using namespace std;
 
 
