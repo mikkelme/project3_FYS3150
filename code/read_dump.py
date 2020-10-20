@@ -33,5 +33,5 @@ def read_data(filename = "system.data"):
 
 type, time, pos, vel, energy = read_data()
 
-plt.plot(pos[:,1,0], pos[:,1,1])
+plt.plot(time,energy[:,0,2])
 plt.show()
