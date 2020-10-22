@@ -16,9 +16,11 @@ public:
   double kin; //kinetic energy
   double pot; //potential energy
   double mek; //mechanical energy
+  bool fixed = false; //opportunity to fix object
 
 
   CelestialBody(string name_input, vec3 pos_input, vec3 vel_input, double mass_input); //Constructor
+  void Fix(bool fix);
   void Print();
 
 

@@ -43,8 +43,8 @@ void SolarSystem::CalculateForceEnergy(Force &force){
     CelestialBody &body1 = my_bodies[i];
     for (int j = i+1; j < N; j++){
         CelestialBody &body2 = my_bodies[j];
-        force.call_force(body1, body2);
-        force.call_force(body2, body1);
+        if (body1.fixed == false) {force.call_force(body1, body2);} //Force on body1
+        if (body2.fixed == false) {force.call_force(body2, body1);} //Force on body2
         double speed = body1.velocity.length();
         body1.kin = 1/2*body1.mass*speed*speed;
         body1.mek = body1.kin + body1.pot;

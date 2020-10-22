@@ -13,7 +13,10 @@ using namespace std;
 
 int main (int numArguments, char ** arguments){
   int numTimesteps = 1000;
-  if (numArguments >= 2) numTimesteps = atoi(arguments[1]);
+  double dt = 0.001;
+  if (numArguments >= 2) dt = atof(arguments[1]);
+  if (numArguments >= 3) numTimesteps = atoi(arguments[2]);
+
 
 
   //Initialize instance of SolarSystem
@@ -26,11 +29,10 @@ int main (int numArguments, char ** arguments){
 
   CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
   CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(1, 0, 0), vec3(0, 2*pi, 0), M_Earth/M_Sun);
-  //my_system.PrintBodies();
+  Sun.Fix(true);
 
 
   //Solver
-  double dt = 0.01;
   Solver my_solver(dt);
   Force my_force("Gravity");
 
@@ -40,6 +42,7 @@ int main (int numArguments, char ** arguments){
 
   double time = 0;
   my_system.WriteToFile("system.data", time);
+
   for (int timestep = 1; timestep < numTimesteps; timestep++){
     time = dt*timestep;
     //my_solver.Euler_advance(my_system, my_force);

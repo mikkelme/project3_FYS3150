@@ -12,6 +12,10 @@ CelestialBody::CelestialBody(string name_input, vec3 pos_input, vec3 vel_input, 
   mass = mass_input;
 }
 
+void CelestialBody::Fix(bool fix){
+  fixed = fix;
+}
+
 void CelestialBody::Print(){
   cout << name;
   cout << "; Position: " << position;
