@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import subprocess
 
 
 def read_data(filename = "system.data"):
@@ -30,7 +31,7 @@ def read_data(filename = "system.data"):
             vel[i, j] = data[3:6]
             energy[i, j] = data[6:9]
 
-    return type, time, pos, vel, energy, timesteps
+    return np.array(type), time, pos, vel, energy, timesteps
 
 type, time, pos, vel, energy, timesteps = read_data()
 
@@ -80,6 +81,52 @@ def plot_pos(pos, timesteps, planets, axis, solver):
     plt.axis("equal")
     plt.show()
 
+def run_cpp(exe_file, dt, numTimesteps):
+    """ Run program """
+
+    #print(f"Running: \"{exe_file} {dt} {numTimesteps}\"", end = "")
+    subprocess.call([exe_file, str(dt), str(numTimesteps)])
+    #print(": Done")
+
+def error_plot(Euler_file, Verlet_file):
+    folder = "../test_files/"
+    planet_focus = "Earth"
+    N = 5
+    dt = np.logspace(-1,-N,N)
+    
+    T = 1 #[years]
+    numTimesteps = T/dt
+
+
+    abs_pos_err = np.zeros((2, N))
+    #abs_engery_err = np.zeros((2, N))
+
+    files = [Euler_file, Verlet_file]
+    for j in range(len(files)):
+        for i in range(N):
+            print(f"Running: {files[j]} for dt = {dt[i]}, numTimesteps = {numTimesteps[i]}")
+            run_cpp(folder + files[j], dt[i], numTimesteps[i])
+            type, time, pos, vel, energy, timesteps = read_data()
+            planet_idx = np.argwhere(type == planet_focus)[0][0]
+            abs_pos_err[j,i] = np.linalg.norm(pos[0, planet_idx] - pos[-1, planet_idx])
+        plt.plot(dt, abs_pos_err[j], marker = "o", label = f"{files[j]}")
+    plt.legend()
+    plt.title("...")
+    plt.xlabel("dt [1/yr]")
+    plt.xscale('log')
+    plt.yscale('log')
+    plt.show()
+
+
+
+
+error_plot("EarthSun_Euler.exe", "EarthSun_Verlet.exe")
+
+
+
+
+"""
 solver = "Velocity Verlet"
 # solver = "Euler"
 plot_pos(pos, timesteps, [0,1], [0,1], solver)
+"""

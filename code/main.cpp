@@ -45,8 +45,8 @@ int main (int numArguments, char ** arguments){
 
   for (int timestep = 1; timestep < numTimesteps; timestep++){
     time = dt*timestep;
-    //my_solver.Euler_advance(my_system, my_force);
-    my_solver.Velocity_Verlet(my_system, my_force);
+    my_solver.Euler_advance(my_system, my_force);
+    // my_solver.Velocity_Verlet(my_system, my_force);
     my_system.WriteToFile("system.data", time);
 }
 

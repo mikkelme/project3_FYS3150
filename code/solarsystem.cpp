@@ -11,7 +11,7 @@ using namespace std;
 CelestialBody& SolarSystem::CreateBody(string body_name, vec3 pos, vec3 vel, double mass){
   //Create instance of CelestrialBody
   //adds object to my_bodies and body_name to body_names
-  cout << "Creating body: " << body_name << endl;
+  //cout << "Creating body: " << body_name << endl;
   my_bodies.push_back(CelestialBody(body_name, pos, vel, mass));
   body_names.push_back(body_name);
 
