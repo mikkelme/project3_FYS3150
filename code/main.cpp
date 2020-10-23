@@ -27,7 +27,7 @@ int main (int numArguments, char ** arguments){
   CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(8.575e-1, 5.002e-1, 6.633e-5), vec3(8.833e-3, 1.486e-2, 1.132e-7)*yr, M_Earth/M_Sun);
   CelestialBody &Jupiter = my_system.CreateBody("Jupiter", vec3(2.601, -4.399, -3.995e-2), vec3(6.402e-3, 4.198e-3, -1.606e-4)*yr, M_Jupiter/M_Sun);
   Sun.Fix(false);
->>>>>>> ca1e39d7f75482dcf69a59eeba47c1768ea64b62
+
 
 
   //Solver
