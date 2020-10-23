@@ -10,8 +10,8 @@ public:
   double my_dt;
 
   Solver(double dt);
-  void Euler_advance(SolarSystem &system, Force &force);
-  void Velocity_Verlet(SolarSystem &system, Force &force);
+  void Euler_advance(SolarSystem &system, Force &force, double time);
+  void Velocity_Verlet(SolarSystem &system, Force &force, double time);
 
 };
 

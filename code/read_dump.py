@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import subprocess
+from scipy import stats
 
 
 def read_data(filename = "system.data"):
@@ -33,7 +34,6 @@ def read_data(filename = "system.data"):
 
     return np.array(type), time, pos, vel, energy, timesteps
 
-type, time, pos, vel, energy, timesteps = read_data()
 
 def get_fig_size(fig_widt_pt, mode):
         """ Get appropriate fig sizes for latex
@@ -41,8 +41,14 @@ def get_fig_size(fig_widt_pt, mode):
         ratio = {"golden": (5**0.5 - 1)/2, "square": 1, "3/4": 0.75}
         in_per_pt = 1/72.27
         fig_width_in = fig_widt_pt*in_per_pt
-        fig_height_in = fig_width_in*ratio[mode]
+
+        if isinstance(mode,str):
+            fig_height_in = fig_width_in*ratio[mode]
+        else:
+            fig_height_in = fig_width_in*mode
+
         fig_dim = (fig_width_in, fig_height_in)
+
         return fig_dim
 
 def set_margins(mode):
@@ -52,6 +58,7 @@ def set_margins(mode):
         plt.subplots_adjust(left = 0.15, bottom = 0.10, right = 0.88, top = 0.90)
     if mode == "3/4":
         plt.subplots_adjust(left = 0.15, bottom = 0.13, right = 0.94, top = 0.87)
+
 
 
 
@@ -83,25 +90,24 @@ def plot_pos(pos, timesteps, planets, axis, solver):
 
 def run_cpp(exe_file, dt, numTimesteps):
     """ Run program """
-
-    #print(f"Running: \"{exe_file} {dt} {numTimesteps}\"", end = "")
     subprocess.call([exe_file, str(dt), str(numTimesteps)])
-    #print(": Done")
 
-def error_plot(Euler_file, Verlet_file):
+
+def error_plot(files):
     folder = "../test_files/"
     planet_focus = "Earth"
     N = 5
+    T = 10 #[years]
     dt = np.logspace(-1,-N,N)
-    
-    T = 1 #[years]
-    numTimesteps = T/dt
 
+    numTimesteps = np.rint(T/dt + 1).astype(int)
+    abs_pos_err = np.zeros((len(files), N))
+    abs_energy_err = np.zeros((len(files), N))
 
-    abs_pos_err = np.zeros((2, N))
-    #abs_engery_err = np.zeros((2, N))
-
-    files = [Euler_file, Verlet_file]
+    mode = 2*(5**0.5 - 1)/2
+    fig, ax = plt.subplots(ncols=2, nrows=1, figsize=get_fig_size(390, mode))
+    plt.tight_layout(pad = 3.2)
+    plt.subplots_adjust(hspace = 0.4)
     for j in range(len(files)):
         for i in range(N):
             print(f"Running: {files[j]} for dt = {dt[i]}, numTimesteps = {numTimesteps[i]}")
@@ -109,18 +115,44 @@ def error_plot(Euler_file, Verlet_file):
             type, time, pos, vel, energy, timesteps = read_data()
             planet_idx = np.argwhere(type == planet_focus)[0][0]
             abs_pos_err[j,i] = np.linalg.norm(pos[0, planet_idx] - pos[-1, planet_idx])
-        plt.plot(dt, abs_pos_err[j], marker = "o", label = f"{files[j]}")
-    plt.legend()
-    plt.title("...")
-    plt.xlabel("dt [1/yr]")
-    plt.xscale('log')
-    plt.yscale('log')
+            abs_energy_err[j,i] = np.linalg.norm(energy[0, :, 2] - energy[-1, :, 2])
+
+        plt.subplot(2,1,1)
+
+        x = np.log(dt); y = np.log(abs_pos_err[j])
+        a, b, R, p, std_a = stats.linregress(x,y)
+
+        plt.plot(dt, abs_pos_err[j], color = get_color(j), linestyle = "none", marker = "o", label = f"{files[j]}")
+        plt.plot(dt, dt**a*np.exp(b), color = get_color(j), linestyle = "--", label = f"Linreg: slope = {a:.2f}, std = {std_a:.2f} ")
+        plt.title(f"Positional error between T = 0 and T = {T} years")
+        plt.xlabel("dt [1/yr]")
+        plt.ylabel("Pos error [AU]")
+        plt.xscale('log')
+        plt.yscale('log')
+        plt.legend(loc = 4, prop={'size': 9})
+
+
+
+        plt.subplot(2,1,2)
+        plt.plot(dt, abs_energy_err[j], color = get_color(j), marker = "o", label = f"{files[j]}")
+        plt.title(f"Mechanical energy error between T = 0 and T = {T} years")
+        plt.xlabel("dt [1/yr]")
+        plt.ylabel(f"Energy error [AU^5/yr^4]")
+        plt.xscale('log')
+        plt.yscale('log')
+        plt.legend()
     plt.show()
 
 
+# type, time, pos, vel, energy, timesteps = read_data()
+# plt.plot(time, energy[:,1,2])
+# plt.show()
+
+files = ["EarthSun_Euler.exe", "EarthSun_Verlet.exe"]#, "EarthSun_Verlet_SunFree.exe"]
+error_plot(files)
 
 
-error_plot("EarthSun_Euler.exe", "EarthSun_Verlet.exe")
+
 
 
 

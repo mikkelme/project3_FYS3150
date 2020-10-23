@@ -7,16 +7,19 @@ Solver::Solver(double dt){
 }
 
 
-void Solver::Euler_advance(SolarSystem &system, Force &force){
+void Solver::Euler_advance(SolarSystem &system, Force &force, double time){
   system.CalculateForceEnergy(force);
+  system.WriteToFile("system.data", time);
+
   for (CelestialBody &body : system.bodies()){
-    body.velocity += body.force / body.mass * my_dt;
     body.position += body.velocity * my_dt;
+    body.velocity += body.force / body.mass * my_dt;
   }
 }
 
-void Solver::Velocity_Verlet(SolarSystem &system, Force &force){
+void Solver::Velocity_Verlet(SolarSystem &system, Force &force, double time){
 	system.CalculateForceEnergy(force);
+  system.WriteToFile("system.data", time);
 
 	for (CelestialBody &body : system.bodies()){
 		vec3 old_a = body.force / body.mass;

@@ -33,7 +33,10 @@ void SolarSystem::PrintBodies(){
 void SolarSystem::CalculateForceEnergy(Force &force){
 
   for (CelestialBody &body : my_bodies){
-    //Set forces to zero for alle bodies
+    //Reset forces and energy for all bodies
+    body.kin = 0;
+    body.pot = 0;
+    body.mek = 0;
     body.force = vec3{0,0,0};
   }
   double pi = acos(-1.0);
@@ -45,9 +48,6 @@ void SolarSystem::CalculateForceEnergy(Force &force){
         CelestialBody &body2 = my_bodies[j];
         if (body1.fixed == false) {force.call_force(body1, body2);} //Force on body1
         if (body2.fixed == false) {force.call_force(body2, body1);} //Force on body2
-        double speed = body1.velocity.length();
-        body1.kin = 1/2*body1.mass*speed*speed;
-        body1.mek = body1.kin + body1.pot;
     }
   }
 }

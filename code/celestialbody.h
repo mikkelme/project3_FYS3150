@@ -13,9 +13,9 @@ public:
   vec3 velocity;
   vec3 force;
   double mass;
-  double kin; //kinetic energy
-  double pot; //potential energy
-  double mek; //mechanical energy
+  double kin = 0; //kinetic energy
+  double pot = 0; //potential energy
+  double mek = 0; //mechanical energy
   bool fixed = false; //opportunity to fix object
 
 
