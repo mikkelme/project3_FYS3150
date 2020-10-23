@@ -1,5 +1,5 @@
 #include "force.h"
-#include <cmath>
+#include "constants.h"
 #include <iostream>
 
 double Force::Beta; //Initialize Beta
@@ -19,8 +19,6 @@ void Force::call_force(CelestialBody &body1, CelestialBody &body2){ ForceFunc(bo
 
 
 void Force::Gravity(CelestialBody &body1, CelestialBody &body2){
-  double pi = acos(-1.0);
-  double G = 4*pi*pi;
   vec3 dr_vector = body1.position - body2.position;
   double dr = dr_vector.length();
   body1.force += -1*G*body1.mass*body2.mass*dr_vector/(dr*dr*dr);
@@ -51,9 +49,7 @@ void Force::Inverse_Beta(CelestialBody &body1, CelestialBody &body2){
     \nUse class member function: Force::set_beta(double B)" << endl;
     terminate();
   }
-
-  double pi = acos(-1.0);
-  int G = 4*pi*pi;
+  
   vec3 dr_vector = body1.position - body2.position;
   double dr = dr_vector.length();
   body1.force += -1*G*body1.mass*body2.mass*dr_vector/(dr*pow(dr,Beta));

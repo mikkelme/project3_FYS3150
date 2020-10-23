@@ -1,7 +1,7 @@
 #include "solarsystem.h"
+#include "constants.h"
 #include <iostream>
 #include <deque>
-#include <cmath>
 using namespace std;
 
 
@@ -39,8 +39,6 @@ void SolarSystem::CalculateForceEnergy(Force &force){
     body.mek = 0;
     body.force = vec3{0,0,0};
   }
-  double pi = acos(-1.0);
-  double G = 4*pi*pi;
   int N = my_bodies.size();
   for (int i = 0; i < N; i++){
     CelestialBody &body1 = my_bodies[i];
