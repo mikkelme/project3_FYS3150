@@ -24,9 +24,9 @@ def read_data(filename = "system.data"):
 
     #Fill in other data
     for i in timesteps:
-        time[i] = lines[4*i+2].split()[-1]
+        time[i] = lines[(2+numPlanets)*i+2].split()[-1]
         for j in range(numPlanets):
-            data = np.array(lines[4*i+2 + j].split()[2:]).astype(float)
+            data = np.array(lines[(2+numPlanets)*i+2 + j].split()[2:]).astype(float)
             pos[i, j] = data[0:3]
             vel[i, j] = data[3:6]
             energy[i, j] = data[6:9]
@@ -56,7 +56,7 @@ def set_margins(mode):
 
 
 def get_color(idx):
-    color_list = ["tab:orange", "tab:blue"]
+    color_list = ["tab:red", "tab:blue", "tab:orange"]
     return color_list[idx]
 
 def plot_pos(pos, timesteps, planets, axis, solver):
@@ -67,6 +67,7 @@ def plot_pos(pos, timesteps, planets, axis, solver):
 
     coord = ["x [AU]", "y [AU]", "z [AU]"]
     for i in planets:
+        print(i)
         pos_x = pos[timesteps, i, axis[0]]
         pos_y = pos[timesteps, i, axis[1]]
         if np.all(pos_x == pos_x[0]) and np.all(pos_y == pos_y[0]):
@@ -117,10 +118,7 @@ def error_plot(Euler_file, Verlet_file):
     plt.yscale('log')
     plt.show()
 
-
-
-
-error_plot("EarthSun_Euler.exe", "EarthSun_Verlet.exe")
+plot_pos(pos,timesteps,[0,1,2],[0,1],"Verlet")
 
 
 
