@@ -21,14 +21,6 @@ int main (int numArguments, char ** arguments){
   //Initialize instance of SolarSystem
   SolarSystem my_system;
 
-  /*
-  CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
-  CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(1, 0, 0), vec3(0, 2*pi, 0), M_Earth/M_Sun);
-<<<<<<< HEAD
-  // Sun.Fix(true);
-=======
-  Sun.Fix(true);
-  */
 
   // Data accessed from ssd.jpl.nasa.gov, Time: 2020-Oct-23 00:00:00.0000 TBD
   CelestialBody &Sun = my_system.CreateBody("Sun", vec3(-6.158e-3, 6.384e-3, 9.046e-5), vec3(-7.234e-6, -5.148e-6, 2.176e-7)*yr, 1.0);
@@ -49,18 +41,10 @@ int main (int numArguments, char ** arguments){
   double time = 0;
   for (int timestep = 1; timestep < numTimesteps; timestep++){
     time = dt*timestep;
-<<<<<<< HEAD
     // my_solver.Euler_advance(my_system, my_force, time);
     my_solver.Velocity_Verlet(my_system, my_force, time);
   }
   my_system.WriteToFile("system.data", time);
-=======
-    //my_solver.Euler_advance(my_system, my_force);
-    my_solver.Velocity_Verlet(my_system, my_force);
-    my_system.WriteToFile("system.data", time);
-}
-
->>>>>>> ca1e39d7f75482dcf69a59eeba47c1768ea64b62
 
 
 

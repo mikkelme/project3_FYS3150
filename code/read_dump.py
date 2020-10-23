@@ -67,8 +67,8 @@ def get_color(idx):
     return color_list[idx]
 
 def plot_pos(pos, timesteps, planets, axis, solver):
-    mode = "3/4"
-    fig, ax = plt.subplots(ncols=1, nrows=1, figsize=get_fig_size(390, mode))
+    mode = "square"
+    fig, ax = plt.subplots(ncols=1, nrows=1, figsize=get_fig_size(0.45*390, mode))
     plt.tight_layout(pad = 3.2)
     #set_margins(mode)
 
@@ -145,9 +145,11 @@ def error_plot(files):
     plt.show()
 
 
-# type, time, pos, vel, energy, timesteps = read_data()
-# plt.plot(time, energy[:,1,2])
-# plt.show()
+run_cpp("EarthSun_Euler.exe", 0.001, 10)
+type, time, pos, vel, energy, timesteps = read_data()
+plot_pos(pos, timesteps, [0,1], axis, solver)
+
+
 
 files = ["EarthSun_Euler.exe", "EarthSun_Verlet.exe"]#, "EarthSun_Verlet_SunFree.exe"]
 error_plot(files)
