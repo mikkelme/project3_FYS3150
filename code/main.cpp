@@ -8,8 +8,9 @@
 #include "force.h"
 #include "vec3.h"
 
+#include "time.h"
 
-//#include <vector>
+
 using namespace std;
 
 int main (int numArguments, char ** arguments){
@@ -26,7 +27,7 @@ int main (int numArguments, char ** arguments){
   CelestialBody &Sun = my_system.CreateBody("Sun", vec3(-6.158e-3, 6.384e-3, 9.046e-5), vec3(-7.234e-6, -5.148e-6, 2.176e-7)*yr, 1.0);
   CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(8.575e-1, 5.002e-1, 6.633e-5), vec3(8.833e-3, 1.486e-2, 1.132e-7)*yr, M_Earth/M_Sun);
   CelestialBody &Jupiter = my_system.CreateBody("Jupiter", vec3(2.601, -4.399, -3.995e-2), vec3(6.402e-3, 4.198e-3, -1.606e-4)*yr, M_Jupiter/M_Sun);
-  Sun.Fix(false);
+  Sun.Fix(true);
 
 
 
@@ -38,15 +39,19 @@ int main (int numArguments, char ** arguments){
   // double B = 3.0;
   // my_force.set_beta(B);
 
-  double time = 0;
+  // double time = 0;
+  // clock_t start, finish; //For timing
+
+  start = clock(); //Start timer
   for (int timestep = 1; timestep < numTimesteps; timestep++){
     time = dt*timestep;
-    // my_solver.Euler_advance(my_system, my_force, time);
+    //my_solver.Euler_advance(my_system, my_force, time);
     my_solver.Velocity_Verlet(my_system, my_force, time);
   }
   my_system.WriteToFile("system.data", time);
 
+  // finish = clock();
+  // double timeused = (double) (finish - start)/(CLOCKS_PER_SEC );
+  // my_solver.WriteTime(timeused);
 
-
-  return 0;
 }

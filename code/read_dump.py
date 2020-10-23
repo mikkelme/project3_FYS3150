@@ -61,14 +61,13 @@ def set_margins(mode):
 
 
 
-
 def get_color(idx):
     color_list = ["tab:red", "tab:blue", "tab:orange"]
     return color_list[idx]
 
 def plot_pos(pos, timesteps, planets, axis, solver):
     mode = "square"
-    fig, ax = plt.subplots(ncols=1, nrows=1, figsize=get_fig_size(0.45*390, mode))
+    fig, ax = plt.subplots(ncols=1, nrows=1, figsize=get_fig_size(390, mode))
     plt.tight_layout(pad = 3.2)
     #set_margins(mode)
 
@@ -100,6 +99,8 @@ def error_plot(files):
     N = 5
     T = 10 #[years]
     dt = np.logspace(-1,-N,N)
+    color = ["tab:blue", "tab:orange"]
+    color_fit = ["tab:purple", "tab:red"]
 
     numTimesteps = np.rint(T/dt + 1).astype(int)
     abs_pos_err = np.zeros((len(files), N))
@@ -123,8 +124,8 @@ def error_plot(files):
         x = np.log(dt); y = np.log(abs_pos_err[j])
         a, b, R, p, std_a = stats.linregress(x,y)
 
-        plt.plot(dt, abs_pos_err[j], color = get_color(j), linestyle = "none", marker = "o", label = f"{files[j]}")
-        plt.plot(dt, dt**a*np.exp(b), color = get_color(j), linestyle = "--", label = f"Linreg: slope = {a:.2f}, std = {std_a:.2f} ")
+        plt.plot(dt, abs_pos_err[j], color = color[j], linestyle = "none", marker = "o", label = f"{files[j]}")
+        plt.plot(dt, dt**a*np.exp(b), color = color_fit[j], linestyle = "--", label = f"Linreg: slope = {a:.2f}, std = {std_a:.2f} ")
         plt.title(f"Positional error between T = 0 and T = {T} years")
         plt.xlabel("dt [1/yr]")
         plt.ylabel("Pos error [AU]")
@@ -132,10 +133,8 @@ def error_plot(files):
         plt.yscale('log')
         plt.legend(loc = 4, prop={'size': 9})
 
-
-
         plt.subplot(2,1,2)
-        plt.plot(dt, abs_energy_err[j], color = get_color(j), marker = "o", label = f"{files[j]}")
+        plt.plot(dt, abs_energy_err[j], color = color[j], marker = "o", label = f"{files[j]}")
         plt.title(f"Mechanical energy error between T = 0 and T = {T} years")
         plt.xlabel("dt [1/yr]")
         plt.ylabel(f"Energy error [AU^5/yr^4]")
@@ -145,23 +144,66 @@ def error_plot(files):
     plt.show()
 
 
-run_cpp("EarthSun_Euler.exe", 0.001, 10)
-type, time, pos, vel, energy, timesteps = read_data()
-plot_pos(pos, timesteps, [0,1], axis, solver)
+def timing(folder, exe_files, exp_max, exp_num, dt):
+    color = ["tab:blue", "tab:orange"]
+    color_fit = ["tab:purple", "tab:red"]
+    exponent = np.linspace(1, exp_max, exp_num)
+    data = np.zeros((len(exe_files), exp_num))
+
+    mode = "3/4"
+    fig, ax = plt.subplots(ncols=1, nrows=1, figsize=get_fig_size(390, mode))
+    plt.tight_layout(pad = 3.2)
+
+    for i in range(len(exe_files)):
+        timing_data = "Timeused.txt"
+        with open(timing_data, "w") as infile:
+            infile.write("")
+
+        print(f"Running: \"{exe_files[i]} {dt} N\"  for N: [10:10^{exp_max:d}]\nn: ", end = "")
+        for n in exponent: #Run Jacobi_solver for different dimensions n
+            subprocess.call([folder + exe_files[i], str(dt), str(int(10**n))])
+            print(f"\r n: 10^{n:.2f}/{exp_max}", end = "")
+        print("\nDone")
+
+        with open(timing_data, "r") as infile:
+            j = 0
+            for line in infile:
+                data[i,j] = float(line)
+                j+= 1
+
+
+        x = np.log(10**exponent); y = np.log(data[i])
+        a, b, R, p, std_a = stats.linregress(x,y)
+
+        plt.plot(10**exponent, data[i], color = color[i], linestyle = "none", marker = "o", label = exe_files[i])
+        plt.plot(10**exponent, 10**exponent**a*np.exp(b), color = color_fit[i], linestyle = "-", label = f"Linreg: slope = {a:.2f}, std = {std_a:.3f} ")
+    plt.title("Timing of algorithms (without writing to data)")
+    plt.xlabel("Number of timesteps")
+    plt.ylabel("Time used [s]")
+    plt.xscale("log")
+    plt.yscale("log")
+    plt.legend()
+    plt.show()
+
+
+
+
+# folder  = "../test_files/"
+# files = ["Euler_timing.exe" ,"Verlet_timing.exe"]
+# timing(folder, files , 7, 100, 0.001)
+# timing_data = "Timeused.txt"
+
+
+
+# # run_cpp("../test_files/EarthSun_Euler.exe", 0.001, 10000)
+# # type, time, pos, vel, energy, timesteps = read_data()
+# #
+# # solver = "Velocity Verlet"
+# # solver = "Euler"
+# plot_pos(pos, timesteps, [0,1], [0,1], solver)
+
 
 
 
 files = ["EarthSun_Euler.exe", "EarthSun_Verlet.exe"]#, "EarthSun_Verlet_SunFree.exe"]
 error_plot(files)
-
-
-
-
-
-
-
-"""
-solver = "Velocity Verlet"
-# solver = "Euler"
-plot_pos(pos, timesteps, [0,1], [0,1], solver)
-"""

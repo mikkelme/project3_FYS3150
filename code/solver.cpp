@@ -28,3 +28,19 @@ void Solver::Velocity_Verlet(SolarSystem &system, Force &force, double time){
 		body.velocity += (old_a + body.force / body.mass)*(my_dt*0.5);
 	}
 }
+
+
+void Solver::WriteTime(double timeused){
+  ofstream ofile;
+  string output_file = "Timeused.txt";
+
+  ofile.open(output_file, ios::out | ios::app);
+  if (ofile.fail()){
+    throw ios_base::failure(strerror(errno));
+  }
+  ofile.exceptions(ofile.exceptions() | ios::failbit | ifstream::badbit);
+  ofile << setiosflags(ios::showpoint | ios::uppercase);
+
+  ofile << setprecision(8) << timeused <<endl;
+  ofile.close();
+}
