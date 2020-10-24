@@ -17,5 +17,5 @@ const double M_Saturn = 5.683e26;
 const double M_Uranus = 8.681e25;
 const double M_Neptune = 1.024e26;
 const double M_Pluto = 1.309e22;
-const double c = 299792.458/149597871*31556926; //AU/yr
+
 #endif // CONSTANTS_H
