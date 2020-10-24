@@ -14,6 +14,7 @@ public:
   Force(string force_type);
   static void Gravity(CelestialBody &body1, CelestialBody &body2);
   static void Inverse_Beta(CelestialBody &body1, CelestialBody &body2);
+  static void Relativistic_Gravity(CelestialBody &body1, CelestialBody &body2);
   void call_force(CelestialBody &body1, CelestialBody &body2);
   void set_beta(double B);
 

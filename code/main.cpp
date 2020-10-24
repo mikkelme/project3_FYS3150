@@ -7,7 +7,6 @@
 #include "time.h"
 #include <iostream>
 
-
 using namespace std;
 
 int main (int numArguments, char ** arguments){
@@ -18,7 +17,7 @@ int main (int numArguments, char ** arguments){
   if (numArguments >= 2) dt = atof(arguments[1]);
   if (numArguments >= 3) numTimesteps = atoi(arguments[2]);
   // if (numArguments >= 4) B = atof(arguments[3]);
-  if (numArguments >= 4) v_escape = atof(arguments[3]);
+
 
 
   //Initialize instance of SolarSystem
@@ -28,6 +27,7 @@ int main (int numArguments, char ** arguments){
   bool Jupiter_Sun_Earth_fixed = false;
   bool Jupiter_Sun_Earth = false;
   bool All_planets = true;
+  bool Mercury_precession = false;
 
   if (Circle_Sun_Earth){
     CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
@@ -73,13 +73,29 @@ int main (int numArguments, char ** arguments){
     Sun.Fix(false);
   }
 
+  if (Escape_velocity){
+    CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
+    CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(1, 0, 0), vec3(v_escape, 0, 0), M_Earth/M_Sun);
+    Sun.Fix(true);
+    if (numArguments >= 4) v_escape = atof(arguments[3]);
+  }
+
+  if (Mercury_precession){
+    CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
+    CelestialBody &Mercury = my_system.CreateBody("Mercury", vec3(0.3075, 0, 0), vec3(0, 12.44 ,0), M_Mercury/M_Sun);
+    cout << "hep" << endl;
+    //Sun.Fix(true);
+  }
 
   //Solver
   Solver my_solver(dt);
-  Force my_force("Gravity");
+  // Force my_force("Gravity");
 
   // Force my_force("Inverse_Beta");
   // my_force.set_beta(B);
+
+  Force my_force("Relativistic");
+
 
 
 

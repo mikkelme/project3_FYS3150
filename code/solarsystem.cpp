@@ -70,15 +70,15 @@ void SolarSystem::WriteToFile(string filename, double time){
     CelestialBody &body = my_bodies[i];
     m_file << i << " ";
     m_file << body.name << " ";
-    m_file << body.position.x() << " ";
-    m_file << body.position.y() << " ";
-    m_file << body.position.z() << " ";
-    m_file << body.velocity.x() << " ";
-    m_file << body.velocity.y() << " ";
-    m_file << body.velocity.z() << " ";
-    m_file << body.kin << " ";
-    m_file << body.pot << " ";
-    m_file << body.mek << " ";
+    m_file << setprecision(10) << body.position.x() << " ";
+    m_file << setprecision(10) << body.position.y() << " ";
+    m_file << setprecision(10) << body.position.z() << " ";
+    m_file << setprecision(10) << body.velocity.x() << " ";
+    m_file << setprecision(10) << body.velocity.y() << " ";
+    m_file << setprecision(10) << body.velocity.z() << " ";
+    m_file << setprecision(10) << body.kin << " ";
+    m_file << setprecision(10) << body.pot << " ";
+    m_file << setprecision(10) << body.mek << " ";
     m_file << time << endl;
   }
 }

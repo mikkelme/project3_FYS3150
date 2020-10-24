@@ -243,28 +243,29 @@ def timing(folder, exe_files, exp_max, exp_num, dt):
     plt.legend()
     plt.show()
 
-"""
 def find_escape_velocity(folder, filename, T):
 
     dt  = 0.001
     numTimesteps = np.rint(T/dt + 1).astype(int)
 
     v_analytical = np.sqrt(2*4*np.pi**2)
-    v_escape = 8
+    v_escape = 8.82
     v_increase = 0.0001
 
 
     escape = False
     while escape != True:
-        print(f"\rRunning: {filename} {dt} {numTimesteps} {v_escape}" end = "")
-        print(f"\r n: 10^{n:.2f}/{exp_max}", end = "")
-        print("\nDone")
+        print(f"\rTesting escape velocity: {v_escape}, expected = {v_analytical}", end = "")
+
+        #print(f"\r n: 10^{n:.2f}/{exp_max}", end = "")
+
         subprocess.call([folder + filename, str(dt), str(numTimesteps), str(v_escape)])
         type, time, pos, vel, energy, timesteps = read_data()
         escape = np.all(vel[:,1,0] > 0)
         v_escape += v_increase
-    print(v_escape)
-"""
+
+    print(f"\nEscape accomplished at: {v_escape}\nExpected: {v_analytical}")
+
 
 
 """
@@ -292,6 +293,9 @@ plt.show()
 
 #find_escape_velocity(folder, filename, 10)
 
+#filename = "EarthSun_escape.exe"
+
+#find_escape_velocity(folder, filename, 100)
 
 # filename = "EarthSun_InverseBeta.exe"
 # Inverse_Beta(folder, filename, 101)
