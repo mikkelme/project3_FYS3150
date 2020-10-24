@@ -1,3 +1,5 @@
+#include <iomanip>
+#include <string.h>
 #include "solver.h"
 using namespace std;
 
