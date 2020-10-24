@@ -19,7 +19,7 @@ void Solver::Euler_advance(SolarSystem &system, Force &force, double time){
 
 void Solver::Velocity_Verlet(SolarSystem &system, Force &force, double time){
 	system.CalculateForceEnergy(force);
-  system.WriteToFile("system.data", time);
+  	system.WriteToFile("system.data", time);
 
 	for (CelestialBody &body : system.bodies()){
 		vec3 old_a = body.force / body.mass;
