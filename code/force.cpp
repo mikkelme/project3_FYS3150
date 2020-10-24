@@ -1,14 +1,16 @@
 #include "force.h"
 #include "constants.h"
 #include <iostream>
+#include <iomanip>
 
 double Force::Beta; //Initialize Beta
 
 //Constructor
 Force::Force(string force_type){
   //Link myFunc to the chosen force function
-  if (force_type == "Gravity"){ ForceFunc = Gravity;}
-  else if (force_type == "Inverse_Beta"){ ForceFunc = Inverse_Beta; }
+  if (force_type == "Gravity"){ForceFunc = Gravity;}
+  else if (force_type == "Inverse_Beta"){ForceFunc = Inverse_Beta;}
+  else if (force_type == "Relativistic"){ForceFunc = Relativistic_Gravity;}
   else {
     cout << "force_type: \"" << force_type << "\" not found.\n";
     terminate();
@@ -21,7 +23,7 @@ void Force::call_force(CelestialBody &body1, CelestialBody &body2){ ForceFunc(bo
 void Force::Gravity(CelestialBody &body1, CelestialBody &body2){
   vec3 dr_vector = body1.position - body2.position;
   double dr = dr_vector.length();
-  body1.force += -1*G*body1.mass*body2.mass*dr_vector/(dr*dr*dr);
+  body1.force += -G*body1.mass*body2.mass*dr_vector/(dr*dr*dr);
 
   double speed = body1.velocity.length();
   body1.kin = 0.5*body1.mass*speed*speed;
@@ -42,7 +44,6 @@ void Force::set_beta(double B){
   }
 }
 
-
 void Force::Inverse_Beta(CelestialBody &body1, CelestialBody &body2){
   if (Beta == 0){
     cout << "Beta has not yet been initialized with legal value.\
@@ -60,14 +61,25 @@ void Force::Inverse_Beta(CelestialBody &body1, CelestialBody &body2){
   body1.mek = body1.kin + body1.pot;
 }
 
-void Force::GR_Gravity(CelestialBody &body1, CelestialBody &body2){
+void Force::Relativistic_Gravity(CelestialBody &body1, CelestialBody &body2){
   vec3 dr_vector = body1.position - body2.position;
   double dr = dr_vector.length();
-  //double l = cross
-  body1.force += -1*G*body1.mass*body2.mass*dr_vector/(dr*dr*dr) *(1+ 3*l*l/(dr*dr*c*c));
+  double l = (dr_vector.cross(body1.velocity)).length();
+
+  body1.force += -G*body1.mass*body2.mass*dr_vector/(dr*dr*dr)*(1 + 3*l*l/(dr*dr*c*c));
 
   double speed = body1.velocity.length();
   body1.kin = 0.5*body1.mass*speed*speed;
-  body1.pot += -G*body1.mass*body2.mass/dr;
+  body1.pot += -G*body1.mass*body2.mass/dr; //unsure of this ...have to recalculate for new force
   body1.mek = body1.kin + body1.pot;
+  // double correction = 1 + 3*l*l/(dr*dr*c*c);
+  // cout << std::setprecision(10) << correction << endl;
 }
+
+
+
+
+
+
+
+//
