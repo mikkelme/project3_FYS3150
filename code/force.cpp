@@ -49,8 +49,13 @@ void Force::Inverse_Beta(CelestialBody &body1, CelestialBody &body2){
     \nUse class member function: Force::set_beta(double B)" << endl;
     terminate();
   }
-  
+
   vec3 dr_vector = body1.position - body2.position;
   double dr = dr_vector.length();
   body1.force += -1*G*body1.mass*body2.mass*dr_vector/(dr*pow(dr,Beta));
+
+  double speed = body1.velocity.length();
+  body1.kin = 0.5*body1.mass*speed*speed;
+  body1.pot += -G*body1.mass*body2.mass/((Beta-1) * pow(dr,Beta-1));
+  body1.mek = body1.kin + body1.pot;
 }
