@@ -145,6 +145,71 @@ def error_plot(files):
     plt.show()
 
 
+<<<<<<< HEAD
+=======
+def Inverse_Beta(folder, filename, numBeta):
+    #Beta = np.linscpae(2, 3, numBeta)
+    Beta = np.linspace(2.996,3.00, numBeta)
+    dt  = 0.0001
+    T = 50
+    numTimesteps = np.rint(T/dt + 1).astype(int)
+    planet_focus = "Earth"
+    # mode = "square"
+    # fig, ax = plt.subplots(ncols=4, nrows=4, figsize=get_fig_size(390, mode))
+    # #plt.tight_layout(pad = 3.2)
+    # plt.suptitle(f"Stability of orbit for inverse beta force: F = GmM/r^beta\nT = {T} years")
+    # plt.subplots_adjust(left = 0.07, bottom = 0.05, right = 0.95, top = 0.85, hspace = 0.78)
+
+    mode = "3/4"
+    fig, ax = plt.subplots(ncols=1, nrows=1, figsize=get_fig_size(390, mode))
+    plt.tight_layout(pad = 3.2)
+
+
+    abs_pos_err = np.zeros(numBeta)
+    abs_energy_err = np.zeros(numBeta)
+    position = np.zeros((numBeta, numTimesteps, 2))
+    for i in range(numBeta):
+        print(f"Running: {filename} {dt} {numTimesteps} {Beta[i]}")
+        subprocess.call([folder + filename, str(dt), str(numTimesteps), str(Beta[i])])
+        type, time, pos, vel, energy, timesteps = read_data()
+        planet_idx = np.argwhere(type == planet_focus)[0][0]
+        # abs_pos_err[i] = np.linalg.norm(pos[0, planet_idx] - pos[-1, planet_idx])
+        # abs_energy_err[i] = np.linalg.norm(energy[0, :, 2] - energy[-1, :, 2])
+        # position[i] = pos[:,1,1:2]
+        radial = np.linalg.norm(pos[:, planet_idx], axis = -1)
+
+        plt.plot(time, radial, label = f"beta = {Beta[i]:.3f}")
+    plt.title(f"Radial distance to Sun with inverse beta force, dt = {dt}")
+    plt.xlabel("T [years]")
+    plt.ylabel("radial distance [AU]")
+    plt.legend()
+    plt.show()
+
+
+    # plt.show()
+
+
+
+
+    # # plt.plot(Beta, abs_pos_err, marker = "o", label = f"{filename}")
+    # # plt.title(f"Positional error between T = 0 and T = {T} years")
+    # # plt.xlabel("Beta [1/yr]")
+    # # plt.ylabel("Pos error [AU]")
+    # # # plt.xscale('log')
+    # # # plt.yscale('log')
+    # # plt.axis("equal")
+    # # plt.legend()
+    # # plt.show()
+    #
+    #
+    # plt.plot(Beta, abs_energy_err, label = f"{filename}")
+    # plt.title(f"Mechanical energy error between T = 0 and T = {T} years\nForce: F = GmM/r^Beta")
+    # plt.xlabel("Beta")
+    # plt.ylabel(f"Energy error [AU^5/yr^4]")
+    # #plt.xscale('log')
+    # plt.yscale('log')
+    # plt.show()
+>>>>>>> a8e41d83edaa2fe3aecd6914f2b321785323e08a
 
 
 
@@ -202,9 +267,6 @@ def find_escape_velocity(folder, filename, T):
     escape = False
     while escape != True:
         print(f"\rTesting escape velocity: {v_escape}, expected = {v_analytical}", end = "")
-
-        #print(f"\r n: 10^{n:.2f}/{exp_max}", end = "")
-
         subprocess.call([folder + filename, str(dt), str(numTimesteps), str(v_escape)])
         type, time, pos, vel, energy, timesteps = read_data()
         escape = np.all(vel[:,1,0] > 0)
@@ -243,7 +305,13 @@ plt.show()
 
 #find_escape_velocity(folder, filename, 100)
 
+<<<<<<< HEAD
 
+=======
+folder  = "../test_files/"
+filename = "EarthSun_InverseBeta.exe"
+Inverse_Beta(folder, filename, 8)
+>>>>>>> a8e41d83edaa2fe3aecd6914f2b321785323e08a
 
 
 

@@ -51,6 +51,8 @@ def read_data_big(filename = "system.data"):
 
 
 def run_simulation(folder, exe_file, dt, numTimesteps):
+    print("run denied")
+    exit()
     subprocess.call([folder + exe_file, str(dt), str(numTimesteps)])
 
 
@@ -64,6 +66,7 @@ def measure_precession(folder, exe_file):
     #run_simulation(folder, exe_file, dt, numTimesteps)
 
     type, pos, time = read_data_big("newton_precession.data")
+>>>>>>> a8e41d83edaa2fe3aecd6914f2b321785323e08a
     planet_idx = np.argwhere(type == planet_focus)[0][0]
 
 
@@ -108,12 +111,14 @@ def measure_precession(folder, exe_file):
     #np.save("Newton_angle.npy", angle)
     plt.plot(angle)
     plt.show()
+>>>>>>> 8e57b985dc11cd6e6dd3b55f05307ba65ba01202
     effective_time = time[minema][-1]
     numOrbits = len(minema)
     print(f"effective time = {effective_time}, number of orbits = {numOrbits}")
     plt.plot(time, r)
     plt.plot(time[minema], r[minema], 'o')
     plt.show()
+>>>>>>> 8e57b985dc11cd6e6dd3b55f05307ba65ba01202
 
 
 
@@ -126,7 +131,10 @@ exe_file = "MercurySun_precession.exe"
 
 # exe_file = "MarcurySun_precession_normalG.exe"
 # exe_file = "MercurySun_precessionSunFree.exe"
-#measure_precession(folder, exe_file)
+print("Began program")
+measure_precession(folder, exe_file)
+
+
 
 
 

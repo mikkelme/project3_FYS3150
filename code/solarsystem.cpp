@@ -1,6 +1,7 @@
 #include "solarsystem.h"
 #include "constants.h"
 #include <iostream>
+#include <iomanip>
 #include <deque>
 using namespace std;
 
@@ -62,7 +63,6 @@ void SolarSystem::WriteToFile(string filename, double time){
       terminate();
     }
   }
-
 
   m_file << my_bodies.size() << endl;
   m_file << "id type x y z vx vy vz E_kin E_pot E_mek time" << endl;

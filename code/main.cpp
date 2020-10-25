@@ -16,23 +16,30 @@ int main (int numArguments, char ** arguments){
   double v_escape = 1;
   if (numArguments >= 2) dt = atof(arguments[1]);
   if (numArguments >= 3) numTimesteps = atoi(arguments[2]);
-  // if (numArguments >= 4) B = atof(arguments[3]);
+  if (numArguments >= 4) B = atof(arguments[3]);
 
 
 
   //Initialize instance of SolarSystem
   SolarSystem my_system;
   bool Circle_Sun_Earth = false;
+  bool Ellipse_Sun_Earth = true;
   bool Escape_velocity = false;
   bool Jupiter_Sun_Earth_fixed = false;
   bool Jupiter_Sun_Earth = false;
   bool All_planets = false;
-  bool Mercury_precession = true;
+  bool Mercury_precession = false;
 
   if (Circle_Sun_Earth){
     CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
     CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(1, 0, 0), vec3(0, 2*pi, 0), M_Earth/M_Sun);
     Sun.Fix(false);
+  }
+
+  if (Circle_Sun_Earth){
+    CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
+    CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(1, 0, 0), vec3(0, 5, 0), M_Earth/M_Sun);
+    Sun.Fix(true);
   }
 
   if (Escape_velocity){
@@ -88,12 +95,12 @@ int main (int numArguments, char ** arguments){
 
   //Solver
   Solver my_solver(dt);
-  // Force my_force("Gravity");
+  //Force my_force("Gravity");
 
-  // Force my_force("Inverse_Beta");
-  // my_force.set_beta(B);
+  Force my_force("Inverse_Beta");
+  my_force.set_beta(B);
 
-  Force my_force("Relativistic");
+  //Force my_force("Relativistic");
 
 
 
