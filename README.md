@@ -3,8 +3,15 @@
 
 
 # Use of testfile
-| .exe-files       | input variables     | 
-| ------------- |:-------------:| 
-| col 3 is      | right-aligned |
-| col 2 is      | centered      | 
-| zebra stripes | are neat      |   
+| .exe-files       | input variables     |  description |
+| ------------- |:-------------:|:-------------:|
+| All_planets.exe  | ... | ... |
+| Earth_sun_Jupiter.ex | ... | ... |
+| Earth.exe| ... | ... |
+| ... | ... | ... |
+| ... | ... | ... |
+| ... | ... | ... |
+| ... | ... | ... |
+| ... | ... | ... |
+
+
