@@ -3,17 +3,17 @@
 
 
 # Use of testfiles
-| .exe-files       | input variables     |  description |
+| .exe-files       | input variables     |  description | Compiler used |
 | ------------- |:-------------:|:-------------:|
-| EarthSun_Euler.exe | 1: dt, 2: numTimesteps | Earth-Sun system, circular orbit, sun fixed, Euler |
-| EarthSun_Verlet.exe | 1: dt, 2: numTimesteps | Earth-Sun system, circular orbit, sun fixed, Velocity Verlet |
-| Euler_timing.exe | 1: dt, 2: numTimesteps | Earth-Sun system, circular orbit, sun fixed, Euler, no data output other than timing  |
-| Verlet_timing.exe | 1: dt, 2: numTimesteps| Earth-Sun system, circular orbit, sun fixed, Euler, no data output other than timing |
-| All_planets.exe  | ... | ... |
-| Earth_sun_Jupiter.ex | ... | ... |
-| Earth.exe| ... | ... |
-| EarthSun_escape.exe | ... | ... |
-| EarthSun_InverseBeta.exe | ... | ... |
+| EarthSun_Euler.exe | 1: dt, 2: numTimesteps | Earth-Sun system, circular orbit, sun fixed, Euler | Native macOS (Clang) |
+| EarthSun_Verlet.exe | 1: dt, 2: numTimesteps | Earth-Sun system, circular orbit, sun fixed, Velocity Verlet | Clang |
+| Euler_timing.exe | 1: dt, 2: numTimesteps | Earth-Sun system, circular orbit, sun fixed, Euler, no data output other than timing | Clang |
+| Verlet_timing.exe | 1: dt, 2: numTimesteps| Earth-Sun system, circular orbit, sun fixed, Euler, no data output other than timing | Clang |
+| All_planets.exe  | 1: dt, 2: numTimesteps | All planets system, elliptical orbit, sun unfixed, Velocity Verlet | GCC |
+| Earth_sun_Jupiter.ex | 1: dt, 2: numTimesteps | Earth-Sun-Jupiter system, elliptical orbit, sun unfixed, Velocity Verlet | GCC |
+| Earth.exe| 1: dt, 2: numTimesteps | Earth-Sun system, elliptical orbit, sun fixed, Velocity Verlet | GCC |
+| EarthSun_escape.exe | ... | ... | Clang |
+| EarthSun_InverseBeta.exe | ... | ... | Clang |
 | ... | ... | ... |
 | ... | ... | ... |
 | ... | ... | ... |
