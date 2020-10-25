@@ -5,41 +5,11 @@ from scipy import stats
 from scipy.signal import argrelextrema
 
 
-def read_data(filename = "system.data"):
-    infile = open(filename, "r")
-    lines = infile.readlines()
-
-    numPlanets = int(lines[0])
-    numTimesteps = int(len(lines)/(2+numPlanets))
-    numColon = len(lines[1].split())
-    timesteps = np.linspace(0, numTimesteps-1, numTimesteps).astype(int)
-
-    type = []                                           #Planet name
-    time = np.zeros(numTimesteps)
-    pos = np.zeros((numTimesteps, numPlanets, 3))       #x, y, z
-    vel = np.zeros((numTimesteps, numPlanets, 3))       #vx, vy, vz
-    energy = np.zeros((numTimesteps, numPlanets, 3))    #E_kin, E_pot, E_mek
-
-    #Fill in planets names
-    for i in range(2, numPlanets + 2):
-        type.append(lines[i].split()[1])
-
-    #Fill in other data
-    for i in timesteps:
-        time[i] = lines[(2+numPlanets)*i+2].split()[-1]
-        for j in range(numPlanets):
-            data = np.array(lines[(2+numPlanets)*i+2 + j].split()[2:]).astype(float)
-            pos[i, j] = data[0:3]
-            vel[i, j] = data[3:6]
-            energy[i, j] = data[6:9]
-    infile.close()
-    return np.array(type), time, pos, vel, energy, timesteps
-
 def read_data_big(filename = "system.data"):
 
-    type = []                                           #Planet name
-    time = []
-    pos = []       #x, y, z
+    type =  []
+    time =  []
+    pos =   []
 
     with open(filename, "r") as infile:
         line = infile.readline()
@@ -89,24 +59,37 @@ def measure_precession(folder, exe_file):
     planet_focus = "Mercury"
 
     T = 100
-    dt = 0.00001
-
-    T = 10
-    dt = 0.001
+    dt = 0.000001
     numTimesteps = np.rint(T/dt + 1).astype(int)
-
     #run_simulation(folder, exe_file, dt, numTimesteps)
-    type, pos, time = read_data_big("GR_precession.data")
+
+    type, pos, time = read_data_big("newton_precession.data")
     planet_idx = np.argwhere(type == planet_focus)[0][0]
 
 
     r = np.linalg.norm(pos[:,planet_idx], axis = -1)
     minema = argrelextrema(r, np.less)
     minema = minema[0][np.argwhere(r[minema] < 0.35)].T[0]
+    #new_minema = argrelextrema(r[minema], np.less)
+    #correction
+    tol = 1000
+    keepers = []
+    for i in range(0, len(minema)):
+        if i < 1:
+            if minema[i] > tol:
+                keepers.append(minema[i])
+        else:
+            if minema[i] > tol:
+                diff =  abs(minema[i] - minema[i-1])
+                if diff > tol:
+                    keepers.append(minema[i])
+
+    minema = np.array(keepers)
 
 
-    maxima = argrelextrema(r, np.greater)
-    maxima = maxima[0][np.argwhere(r[maxima] > 0.35)].T[0]
+
+    # maxima = argrelextrema(r, np.greater)
+    # maxima = maxima[0][np.argwhere(r[maxima] > 0.35)].T[0]
 
 
     numOrbits = len(minema)
@@ -119,20 +102,15 @@ def measure_precession(folder, exe_file):
     # plt.plot(pos[:,planet_idx,0], pos[:,planet_idx,1])
     # plt.legend()
     # plt.show()
+
     angle *= 360/(2*np.pi)*3600 #convertion from radians to arcseconds
     dAngle = angle[-1]
-    np.save("angle", angle)
-
-
+    #np.save("Newton_angle.npy", angle)
     plt.plot(angle)
     plt.show()
     effective_time = time[minema][-1]
-    print(effective_time)
-    # print(dAngle)
-    print("Shift pr. century: ", dAngle/effective_time*100)
-
     numOrbits = len(minema)
-    print(numOrbits)
+    print(f"effective time = {effective_time}, number of orbits = {numOrbits}")
     plt.plot(time, r)
     plt.plot(time[minema], r[minema], 'o')
     plt.show()
@@ -150,13 +128,15 @@ exe_file = "MercurySun_precession.exe"
 # exe_file = "MercurySun_precessionSunFree.exe"
 #measure_precession(folder, exe_file)
 
-#
-angle = np.load("GR_angle.npy")
-orbits = np.linspace(1,419,419)
+
+
+
+angle = np.load("Newton_angle.npy")
+orbits = np.linspace(1,len(angle),len(angle))
 
 
 a, b, R, p, std_a = stats.linregress(orbits,angle)
-plt.title("Mercury perihelion precession during 100 years, dt = 1e-6")
+plt.title("Mercury perihelion precession during 100 years\nNewtonian force, dt = 1e-6")
 plt.plot(orbits, angle, "o", label = "datapoints")
 plt.plot(orbits, orbits*a + b, label = f"linreg: slope = {a:g}, std = {std_a:g}")
 plt.xlabel("Orbits")
@@ -165,5 +145,3 @@ plt.legend()
 plt.show()
 const = 419/99.90366*100
 print(f"result = {a*const} +- {std_a*const}")
-
-#
