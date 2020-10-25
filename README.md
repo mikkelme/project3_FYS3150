@@ -4,7 +4,7 @@
 
 # Use of testfiles
 | .exe-files       | input variables     |  description | Compiler used |
-| ------------- |:-------------:|:-------------:|
+| ------------- |:-------------:|:-------------:|:-------------:|
 | EarthSun_Euler.exe | 1: dt, 2: numTimesteps | Earth-Sun system, circular orbit, sun fixed, Euler | Native macOS (Clang) |
 | EarthSun_Verlet.exe | 1: dt, 2: numTimesteps | Earth-Sun system, circular orbit, sun fixed, Velocity Verlet | Clang |
 | Euler_timing.exe | 1: dt, 2: numTimesteps | Earth-Sun system, circular orbit, sun fixed, Euler, no data output other than timing | Clang |
