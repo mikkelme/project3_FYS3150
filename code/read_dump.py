@@ -62,7 +62,8 @@ def set_margins(mode):
 
 
 def get_color(idx):
-    color_list = ["tab:red", "tab:blue", "tab:orange"]
+    color_list = ["xkcd:grey", "xkcd:lime", "tab:blue", "xkcd:orangered", "tab:orange", "xkcd:tan", "xkcd:cyan", "xkcd:navy", "xkcd:coral", "xkcd:yellow"]
+    #color_list = ["tab:blue", "tab:orange", "xkcd:yellow"]
     return color_list[idx]
 
 def plot_pos(pos, timesteps, planets, axis, solver, type, time):
@@ -96,11 +97,11 @@ def run_cpp(exe_file, dt, numTimesteps):
 def error_plot(files):
     folder = "../test_files/"
     planet_focus = "Earth"
-    N = 5
-    T = 1 #[years]
+    N = 5   
+    T = 10 #[years]
     dt = np.logspace(-1,-N,N)
-    color = ["tab:blue", "tab:orange", "tab:green"]
-    color_fit = ["tab:purple", "tab:red", "tab:cyan"]
+    color = ["tab:blue", "tab:orange", "tab:green", "xkcd:brown"]
+    color_fit = ["tab:purple", "tab:red", "tab:cyan", "xkcd:beige"]
 
     numTimesteps = np.rint(T/dt + 1).astype(int)
     abs_pos_err = np.zeros((len(files), N))
@@ -242,7 +243,6 @@ def timing(folder, exe_files, exp_max, exp_num, dt):
     plt.legend()
     plt.show()
 
-
 def find_escape_velocity(folder, filename, T):
 
     dt  = 0.001
@@ -257,23 +257,45 @@ def find_escape_velocity(folder, filename, T):
     while escape != True:
         print(f"\rTesting escape velocity: {v_escape}, expected = {v_analytical}", end = "")
 
-            #print(f"\r n: 10^{n:.2f}/{exp_max}", end = "")
+        #print(f"\r n: 10^{n:.2f}/{exp_max}", end = "")
 
         subprocess.call([folder + filename, str(dt), str(numTimesteps), str(v_escape)])
         type, time, pos, vel, energy, timesteps = read_data()
         escape = np.all(vel[:,1,0] > 0)
         v_escape += v_increase
+
     print(f"\nEscape accomplished at: {v_escape}\nExpected: {v_analytical}")
 
 
 
-
-
+"""
 folder  = "../test_files/"
-filename = "EarthSun_escape.exe"
+files = ["Earth.exe", "Jupiter.exe", "Jupiter10.exe", "Jupiter1000.exe"]
+error_plot(files)
+"""
 
-find_escape_velocity(folder, filename, 100)
+"""
+solver = "Velocity Verlet" 
+type, time, pos, vel, energy, timesteps = read_data("Earth.data")
+plot_pos(pos, timesteps, [0,1], [0,1], solver, type, time)
+type, time, pos, vel, energy, timesteps = read_data("Jupiter.data")
+plot_pos(pos, timesteps, [0,1,2], [0,1], solver, type, time)
+type, time, pos, vel, energy, timesteps = read_data("Jupiter10.data")
+plot_pos(pos, timesteps, [0,1,2], [0,1], solver, type, time)
+type, time, pos, vel, energy, timesteps = read_data("Jupiter1000.data")
+plot_pos(pos, timesteps, [0,1,2], [0,1], solver, type, time)
+# Comment "plt.show()" in plot_pos()
+plt.show()
+"""
 
+#type, time, pos, vel, energy, timesteps = read_data()
+#plot_pos(pos, timesteps, [0,1,2,3,4,5,6,7,8,9], [0,1], "Velocity Verlet", type, time)
+
+#find_escape_velocity(folder, filename, 10)
+
+#filename = "EarthSun_escape.exe"
+
+#find_escape_velocity(folder, filename, 100)
 
 # filename = "EarthSun_InverseBeta.exe"
 # Inverse_Beta(folder, filename, 101)

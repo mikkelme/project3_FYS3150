@@ -16,6 +16,10 @@ void CelestialBody::Fix(bool fix){
   fixed = fix;
 }
 
+vec3 CelestialBody::Momentum(){
+	return -mass*velocity;
+}
+
 void CelestialBody::Print(){
   cout << name;
   cout << "; Position: " << position;

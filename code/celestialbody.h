@@ -22,6 +22,7 @@ public:
   CelestialBody(string name_input, vec3 pos_input, vec3 vel_input, double mass_input); //Constructor
   void Fix(bool fix);
   void Print();
+  vec3 Momentum();
 
 
 
