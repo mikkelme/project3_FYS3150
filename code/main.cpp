@@ -36,7 +36,7 @@ int main (int numArguments, char ** arguments){
     Sun.Fix(false);
   }
 
-  if (Circle_Sun_Earth){
+  if (Ellipse_Sun_Earth){
     CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
     CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(1, 0, 0), vec3(0, 5, 0), M_Earth/M_Sun);
     Sun.Fix(true);
@@ -76,7 +76,7 @@ int main (int numArguments, char ** arguments){
     CelestialBody &Neptune = my_system.CreateBody("Neptune", vec3(2.941e1, -5.443, -5.658e-1), vec3(5.501e-4, 3.105e-3, -7.622e-5)*yr, M_Neptune/M_Sun);
     CelestialBody &Pluto = my_system.CreateBody("Pluto", vec3(1.384e1, -3.119e1, -6.676e-1), vec3(2.952e-3, 6.077e-4, -9.227e-4)*yr, M_Pluto/M_Sun);
     CelestialBody &Sun = my_system.CreateBody("Sun", vec3(-6.158e-3, 6.384e-3, 9.046e-5),
-      Mercury.Momentum()+Venus.Momentum()+Earth.Momentum()+Mars.Momentum()+Jupiter.Momentum()+Saturn.Momentum()+Uranus.Momentum()+Neptune.Momentum()+Pluto.Momentum(), 1.0);
+    Mercury.Momentum()+Venus.Momentum()+Earth.Momentum()+Mars.Momentum()+Jupiter.Momentum()+Saturn.Momentum()+Uranus.Momentum()+Neptune.Momentum()+Pluto.Momentum(), 1.0);
     Sun.Fix(false);
   }
 
