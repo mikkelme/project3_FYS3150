@@ -46,7 +46,7 @@ def measure_precession(folder, exe_file):
 
     T = 100
     T = 100
-    dt = 0.00001
+    dt = 0.01
     # dt = 0.0000001
     numTimesteps = np.rint(T/dt + 1).astype(int)
 
