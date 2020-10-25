@@ -45,7 +45,9 @@ def measure_precession(folder, exe_file):
     planet_focus = "Mercury"
 
     T = 100
+    T = 100
     dt = 0.00001
+    # dt = 0.0000001
     numTimesteps = np.rint(T/dt + 1).astype(int)
 
     run_simulation(folder, exe_file, dt, numTimesteps)
@@ -55,14 +57,17 @@ def measure_precession(folder, exe_file):
     minema = argrelextrema(r, np.less)
     minema = minema[0][np.argwhere(r[minema] < 0.35)].T[0]
 
+    maxima = argrelextrema(r, np.greater)
+    maxima = maxima[0][np.argwhere(r[maxima] > 0.35)].T[0]
+
 
     numOrbits = len(minema)
     angle = np.zeros(numOrbits)
     for i in range(numOrbits):
-        xp = pos[minema][i, planet_idx, 0]
-        yp = pos[minema][i, planet_idx, 1]
+        xp = pos[maxima][i, planet_idx, 0]
+        yp = pos[maxima][i, planet_idx, 1]
         plt.plot(xp, yp, 'o', label = i)
-        angle[i] = np.tan(yp/xp)
+        angle[i] = np.arctan(yp/xp)
 
     plt.plot(pos[:,planet_idx,0], pos[:,planet_idx,1])
     plt.legend()
@@ -73,14 +78,14 @@ def measure_precession(folder, exe_file):
     #/numOrbits
     plt.plot(angle)
     plt.show()
-    effective_time = time[minema][-1]
+    effective_time = time[maxima][-1]
     print(effective_time)
     # print(dAngle)
     print("Shift pr. century: ", dAngle/effective_time*100)
 
 
     plt.plot(time, r)
-    plt.plot(time[minema], r[minema], 'o')
+    plt.plot(time[maxima], r[maxima], 'o')
     plt.show()
 
 
@@ -90,8 +95,8 @@ def measure_precession(folder, exe_file):
 
 
 folder  = "../test_files/"
-# exe_file = "MercurySun_precession.exe"
-exe_file = "MarcurySun_precession_normalG.exe"
+exe_file = "MercurySun_precession.exe"
+# exe_file = "MarcurySun_precession_normalG.exe"
 # exe_file = "MercurySun_precessionSunFree.exe"
 measure_precession(folder, exe_file)
 

@@ -58,8 +58,7 @@ int main (int numArguments, char ** arguments){
   if (Mercury_precession){
     CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
     CelestialBody &Mercury = my_system.CreateBody("Mercury", vec3(0.3075, 0, 0), vec3(0, 12.44 ,0), M_Mercury/M_Sun);
-    cout << "hep" << endl;
-    //Sun.Fix(true);
+    Sun.Fix(true);
   }
 
 
