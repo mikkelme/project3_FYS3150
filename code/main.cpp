@@ -16,23 +16,30 @@ int main (int numArguments, char ** arguments){
   double v_escape = 1;
   if (numArguments >= 2) dt = atof(arguments[1]);
   if (numArguments >= 3) numTimesteps = atoi(arguments[2]);
-  // if (numArguments >= 4) B = atof(arguments[3]);
+  if (numArguments >= 4) B = atof(arguments[3]);
 
 
 
   //Initialize instance of SolarSystem
   SolarSystem my_system;
   bool Circle_Sun_Earth = false;
+  bool Ellipse_Sun_Earth = true;
   bool Escape_velocity = false;
   bool Jupiter_Sun_Earth_fixed = false;
   bool Jupiter_Sun_Earth = false;
-  bool All_planets = true;
+  bool All_planets = false;
   bool Mercury_precession = false;
 
   if (Circle_Sun_Earth){
     CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
     CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(1, 0, 0), vec3(0, 2*pi, 0), M_Earth/M_Sun);
     Sun.Fix(false);
+  }
+
+  if (Circle_Sun_Earth){
+    CelestialBody &Sun = my_system.CreateBody("Sun", vec3(0, 0, 0), vec3(0, 0, 0), 1.0);
+    CelestialBody &Earth = my_system.CreateBody("Earth" ,vec3(1, 0, 0), vec3(0, 5, 0), M_Earth/M_Sun);
+    Sun.Fix(true);
   }
 
   if (Escape_velocity){
@@ -68,7 +75,7 @@ int main (int numArguments, char ** arguments){
     CelestialBody &Uranus = my_system.CreateBody("Uranus", vec3(1.551e1, 1.226e1, -1.554e-1), vec3(-2.467e-3, 2.902e-3, 4.277e-5)*yr, M_Uranus/M_Sun);
     CelestialBody &Neptune = my_system.CreateBody("Neptune", vec3(2.941e1, -5.443, -5.658e-1), vec3(5.501e-4, 3.105e-3, -7.622e-5)*yr, M_Neptune/M_Sun);
     CelestialBody &Pluto = my_system.CreateBody("Pluto", vec3(1.384e1, -3.119e1, -6.676e-1), vec3(2.952e-3, 6.077e-4, -9.227e-4)*yr, M_Pluto/M_Sun);
-    CelestialBody &Sun = my_system.CreateBody("Sun", vec3(-6.158e-3, 6.384e-3, 9.046e-5),  
+    CelestialBody &Sun = my_system.CreateBody("Sun", vec3(-6.158e-3, 6.384e-3, 9.046e-5),
       Mercury.Momentum()+Venus.Momentum()+Earth.Momentum()+Mars.Momentum()+Jupiter.Momentum()+Saturn.Momentum()+Uranus.Momentum()+Neptune.Momentum()+Pluto.Momentum(), 1.0);
     Sun.Fix(false);
   }
@@ -88,12 +95,12 @@ int main (int numArguments, char ** arguments){
 
   //Solver
   Solver my_solver(dt);
-  // Force my_force("Gravity");
+  //Force my_force("Gravity");
 
-  // Force my_force("Inverse_Beta");
-  // my_force.set_beta(B);
+  Force my_force("Inverse_Beta");
+  my_force.set_beta(B);
 
-  Force my_force("Relativistic");
+  //Force my_force("Relativistic");
 
 
 

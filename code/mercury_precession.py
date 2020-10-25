@@ -32,11 +32,13 @@ def read_data(filename = "system.data"):
             pos[i, j] = data[0:3]
             vel[i, j] = data[3:6]
             energy[i, j] = data[6:9]
-
+    infile.close()
     return np.array(type), time, pos, vel, energy, timesteps
 
 
 def run_simulation(folder, exe_file, dt, numTimesteps):
+    print("run denied")
+    exit()
     subprocess.call([folder + exe_file, str(dt), str(numTimesteps)])
 
 
@@ -45,20 +47,13 @@ def measure_precession(folder, exe_file):
     planet_focus = "Mercury"
 
     T = 100
-<<<<<<< HEAD
-    T = 100
-    dt = 0.01
-=======
-    dt = 0.00001
-
-    T = 10
-    dt = 0.001
->>>>>>> 547d42117cfef6b0018cfbec920dc75ecda74ef7
-    # dt = 0.0000001
+    dt = 0.000001
     numTimesteps = np.rint(T/dt + 1).astype(int)
 
-    run_simulation(folder, exe_file, dt, numTimesteps)
+    #run_simulation(folder, exe_file, dt, numTimesteps)
+    print("reading data")
     type, time, pos, vel, energy, timesteps = read_data()
+    print("data read")
     planet_idx = np.argwhere(type == planet_focus)[0][0]
     r = np.linalg.norm(pos[:,planet_idx], axis = -1)
     minema = argrelextrema(r, np.less)
@@ -74,28 +69,27 @@ def measure_precession(folder, exe_file):
     for i in range(numOrbits):
         xp = pos[minema][i, planet_idx, 0]
         yp = pos[minema][i, planet_idx, 1]
-        print(xp, yp)
-        plt.plot(xp, yp, 'o', label = i)
+        # plt.plot(xp, yp, 'o', label = i)
         angle[i] = np.arctan(yp/xp)
 
-    plt.plot(pos[:,planet_idx,0], pos[:,planet_idx,1])
-    plt.legend()
-    plt.show()
+    # plt.plot(pos[:,planet_idx,0], pos[:,planet_idx,1])
+    # plt.legend()
+    # plt.show()
     angle *= 360/(2*np.pi)*3600 #convertion from radians to arcseconds
     dAngle = angle[-1]
 
-    #/numOrbits
-    plt.plot(angle)
-    plt.show()
+
+    # plt.plot(angle)
+    # plt.show()
     effective_time = time[minema][-1]
     print(effective_time)
     # print(dAngle)
     print("Shift pr. century: ", dAngle/effective_time*100)
 
 
-    plt.plot(time, r)
-    plt.plot(time[minema], r[minema], 'o')
-    plt.show()
+    # plt.plot(time, r)
+    # plt.plot(time[minema], r[minema], 'o')
+    # plt.show()
 
 
 
@@ -107,6 +101,7 @@ folder  = "../test_files/"
 exe_file = "MercurySun_precession.exe"
 # exe_file = "MarcurySun_precession_normalG.exe"
 # exe_file = "MercurySun_precessionSunFree.exe"
+print("Began program")
 measure_precession(folder, exe_file)
 
 
