@@ -18,6 +18,9 @@
 #Mac files
 *.DS_Store
 
+#Big arrays
+*.npy
+
 #Folders
 __pycache__/
 
