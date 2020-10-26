@@ -5,7 +5,7 @@ def Inverse_Beta(folder, filename, beta_start, beta_end, numBeta):
     #Run conditions
     Beta = np.linspace(beta_start, beta_end, numBeta)
     dt  = 0.0001
-    T = 1
+    T = 0.5
     numTimesteps = np.rint(T/dt + 1).astype(int)
     planet_focus = "Earth"
 
@@ -32,10 +32,10 @@ def Inverse_Beta(folder, filename, beta_start, beta_end, numBeta):
 
     #What to plot
     plot_pos            = False
-    plot_energy         = False
+    plot_energy         = True
     plot_energy_time    = False
     plot_radial         = False
-    plot_L              = True
+    plot_L              = False
 
     if plot_pos:
         if numBeta != 16:
@@ -60,7 +60,7 @@ def Inverse_Beta(folder, filename, beta_start, beta_end, numBeta):
         plt.plot(Beta, abs_energy_err, label = f"{filename}")
         plt.title(f"Mechanical energy error between T = 0 and T = {T} years\ndt = {dt} yr")
         plt.xlabel("Beta")
-        plt.ylabel(f"Energy error [AU^5/yr^4]")
+        plt.ylabel(f"Energy error [M_Sun AU^2/yr^2]")
         #plt.xscale('log')
         plt.yscale('log')
         plt.show()
@@ -73,7 +73,7 @@ def Inverse_Beta(folder, filename, beta_start, beta_end, numBeta):
             plt.plot(time, energy_cont[i], label = f"Beta = {Beta[i]:.3f}")
             plt.title(f"Total mechanical energy, dt = {dt} yr")
             plt.xlabel("T [yr]")
-            plt.ylabel("E [AU^5/yr^4]")
+            plt.ylabel("E [M_Sun AU^2/yr^2]")
         plt.legend()
         plt.show()
 
@@ -108,4 +108,4 @@ def Inverse_Beta(folder, filename, beta_start, beta_end, numBeta):
 
 folder  = "../test_files/"
 filename = "EarthSun_InverseBeta_ellipse.exe"
-Inverse_Beta(folder, filename, 2, 3, 8)
+Inverse_Beta(folder, filename, 2, 3, 1001)
