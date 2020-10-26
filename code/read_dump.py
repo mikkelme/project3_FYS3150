@@ -63,14 +63,12 @@ def set_margins(mode):
 
 def get_color(idx):
     color_list = ["xkcd:grey", "xkcd:lime", "tab:blue", "xkcd:orangered", "tab:orange", "xkcd:tan", "xkcd:cyan", "xkcd:navy", "xkcd:coral", "xkcd:yellow"]
-    #color_list = ["tab:blue", "tab:orange", "xkcd:yellow"]
     return color_list[idx]
 
 def plot_pos(pos, timesteps, planets, axis, solver, type, time):
     mode = "square"
     fig, ax = plt.subplots(ncols=1, nrows=1, figsize=get_fig_size(390, mode))
     plt.tight_layout(pad = 3.2)
-    #set_margins(mode)
 
     coord = ["x [AU]", "y [AU]", "z [AU]"]
     for i in planets:
