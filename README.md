@@ -1,6 +1,16 @@
-# project3_FYS3150
+# FYS 3150 - Project 3
+This repository contains the work of Fredrik Hoftun and Mikkel Metzsch Jensen for project 3 in Computational Physics FYS3150. 
 
+To use the compiler just type `make` in the commandline in the `/code` directory.
+The compiler will generate a file `main.exe` that can be used in the command line to generate a file `system.data` which contains positions, velocities, kinetic-, potential-, mechanical energy and time.
 
+Usage of `main.exe` in Bash, the arguments are optional: `$ ./main.exe dt numTimesteps B`, where dt defines the time-step in years, numTimesteps is the number of said timesteps so that the total time becomes `T = dt * numTimesteps` and B is the value between 2.0 and 3.0 that defines the inverse beta force.
+
+Example: `$ ./main.exe` runs the program with `dt = 0.001`, `numTimesteps = 1000` and `B = 2.0`.
+
+Another example: `$ ./main.exe 0.001 10000 2.5` runs the program with `dt = 0.001`, `numTimesteps = 10000` and `B = 2.5`.
+
+We have included compiled files which were used to calculate our results below.
 
 # Use of testfiles
 | .exe-files       | input variables     |  description | Compiler used |
